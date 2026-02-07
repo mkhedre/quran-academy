@@ -1,0 +1,92 @@
+/**
+ * FIRESTORE SECURITY RULES
+ *
+ * Core Philosophy:
+ * This ruleset implements a "Public Submission / Private Management" model. It is designed for 
+ * landing page lead capture where any visitor (authenticated or anonymous) can submit a 
+ * registration, but once submitted, the data is protected from public viewing to ensure the 
+ * privacy of sensitive information like WhatsApp numbers and goals.
+ *
+ * Data Structure:
+ * - /registrations/{registrationId}: Flat collection of registration documents.
+ *
+ * Key Security Decisions:
+ * 1. Public Creation: Allowed to facilitate lead generation without requiring a pre-existing 
+ *    account, supporting both 'password' and 'anonymous' auth providers mentioned in the IR.
+ * 2. Read Protection: All 'get' and 'list' operations are denied by default. This prevents 
+ *    unauthorized users from scraping the database for user contact information.
+ * 3. Immutable Submissions: Update and delete operations are disabled. In a production 
+ *    environment, these records should act as an immutable log of interest.
+ * 4. Relational Integrity: On creation, the rules enforce that the internal 'id' field of the 
+ *    document matches the Firestore document ID to ensure data consistency.
+ *
+ * Denormalization for Authorization:
+ * Since this IR lacks a defined "Admin" or "Staff" role, read access is restricted. To enable 
+ * management access, a 'role' field should be denormalized onto a User document, and a 
+ * helper function should be added to check that role before allowing 'list' or 'get' operations.
+ */
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- GLOBAL HELPER FUNCTIONS ---
+
+    /**
+     * @description Checks if the request is coming from an authenticated user.
+     */
+    /*
+    function isSignedIn() {
+      return auth != null;
+    }
+    */
+
+    /**
+     * @description Checks if a document already exists at the requested path.
+     * Used for state-changing operations (update/delete).
+     */
+    /*
+    function existsAt() {
+      return getSelf() != null;
+    }
+    */
+
+    // --- COLLECTION RULES ---
+
+    /** 
+     * @description Rules for the Registration collection. Allows public lead capture while 
+     * securing data from being read or modified by other leads.
+     * @path /registrations/{registrationId}
+     * @allow Create: Anyone (even unauthenticated) can submit a registration if the ID matches.
+     * @deny List: Prevents any user from listing all registrations (prevents data harvesting).
+     * @deny Update/Delete: Ensures lead data remains unchanged once submitted.
+     * @principle Validates relational integrity between the data body and the document path.
+     */
+    match /registrations/{registrationId} {
+      
+      allow create: if request.resource.data.id == registrationId;
+      
+      // CRITICAL: Updates and Deletes are restricted to prevent lead tampering.
+      allow update, delete: if false;
+
+      // CRITICAL: Access to lead data is restricted to prevent public exposure of WhatsApp numbers.
+      // TODO: Add admin authorization logic here (e.g., get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true)
+      allow get, list: if false; 
+    }
+
+    // --- DEFAULT DENY ---
+    // Explicitly deny access to any other paths not defined above.
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+/**
+ * PROTOTYPING NOTE:
+ * These rules are focused on authorization. Schema validation for fields like 'name', 
+ * 'whatsapp', and 'goal' is omitted to allow for rapid frontend development and 
+ * field name iteration. Ensure that a backend process or Cloud Function handles 
+ * the "Send to WhatsApp/Excel" logic by listening to the 'onCreate' trigger 
+ * of the registrations collection.
+ */

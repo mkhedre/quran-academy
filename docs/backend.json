@@ -1,0 +1,67 @@
+{
+  "entities": {
+    "Registration": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Registration",
+      "type": "object",
+      "description": "Represents a user registration submission from the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the registration entry."
+        },
+        "name": {
+          "type": "string",
+          "description": "User's name provided in the registration form."
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "User's WhatsApp number provided in the registration form."
+        },
+        "goal": {
+          "type": "string",
+          "description": "User's goal or motivation for joining, provided in the registration form."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time the registration form was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "whatsapp",
+        "goal",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/registrations/{registrationId}",
+        "definition": {
+          "entityName": "Registration",
+          "schema": {
+            "$ref": "#/backend/entities/Registration"
+          },
+          "description": "Stores user registration data. The `registrationId` is the unique identifier for each registration entry.",
+          "params": [
+            {
+              "name": "registrationId",
+              "description": "Unique identifier for the registration document."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "Given the requirement to store user registration data from the landing page, I propose a simple and secure Firestore structure. Since the application logic involves saving registration data when the 'send' button is clicked, and the request specifies sending data to WhatsApp or saving to an Excel sheet (handled externally), the Firestore structure focuses solely on storing the registration data.  Authorization is not specified, therefore any user can write the data. This means all the write rules will need to be configured on the frontend to restrict spamming.  \n\nThe core entity is `Registration`. All registration documents will be stored in a single collection called `registrations`. This approach facilitates easy querying and management of registration data.\n\nThis structure achieves Authorization Independence because there's no hierarchical relationship or dependency on parent documents. Each registration document stands alone. The QAPs are satisfied by keeping all similar documents within a single collection, so the structure supports list operations securely. The structure also supports the integrity of timestamps, as the `submissionDate` field will be automatically populated on document creation, ensuring data consistency."
+  }
+}
