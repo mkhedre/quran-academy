@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-quran",
+      "description": "A beautiful illustration of the Quran with a modern design",
+      "imageUrl": "../assets/pngtree-muslim-child-reading-quran-with-lantern-decoration-png-image_15036446.png",
+      "imageHint": "Quran illustration with modern design"
+    }
+  ]
 }

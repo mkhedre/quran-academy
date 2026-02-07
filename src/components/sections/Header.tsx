@@ -1,11 +1,12 @@
+'use client';
 
-"use client";
-
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import logo from '../../assets/قِيَم-removebg-preview.png';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,35 +16,35 @@ export function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
-    { name: "البرامج", href: "#programs" },
-    { name: "نظام المكافآت", href: "#rewards" },
-    { name: "المتصدرين", href: "#leaderboard" },
+    { name: 'البرامج', href: '#programs' },
+    { name: 'نظام المكافآت', href: '#rewards' },
+    { name: 'المتصدرين', href: '#leaderboard' },
   ];
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm py-3"
-          : "bg-transparent py-5"
+          ? 'bg-white/90 backdrop-blur-md shadow-sm py-3'
+          : 'bg-transparent py-5',
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-secondary font-headline text-2xl font-bold">
-            B
-          </div>
-          <span className={cn(
-            "text-2xl font-headline font-bold transition-colors",
-            isScrolled ? "text-primary" : "text-primary"
-          )}>
-            أكاديمية بروج
+          <Image src={logo} alt="أكاديمية قيم" className="h-10 w-10" />
+          <span
+            className={cn(
+              'text-2xl font-headline font-bold transition-colors',
+              isScrolled ? 'text-primary' : 'text-primary',
+            )}
+          >
+            أكاديمية قيم
           </span>
         </div>
 
@@ -59,7 +60,7 @@ export function Header() {
             </a>
           ))}
           <Button className="bg-secondary hover:bg-secondary/90 text-primary font-bold px-8 rounded-full border-none">
-            انضم الآن
+            <a href="#register">انضم الآن</a>
           </Button>
         </nav>
 
@@ -92,7 +93,7 @@ export function Header() {
               </a>
             ))}
             <Button className="bg-secondary text-primary font-bold w-full py-6 text-lg">
-              انضم الآن
+              <a href="#register">انضم الآن</a>
             </Button>
           </motion.div>
         )}

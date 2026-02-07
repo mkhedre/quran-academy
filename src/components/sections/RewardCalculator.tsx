@@ -1,17 +1,19 @@
+'use client';
 
-"use client";
-
-import { useState } from "react";
-import { Slider } from "@/components/ui/slider";
-import { motion, AnimatePresence } from "framer-motion";
-import { Wallet, Coins, Sparkles } from "lucide-react";
+import { useState } from 'react';
+import { Slider } from '@/components/ui/slider';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Wallet, Coins, Sparkles } from 'lucide-react';
 
 export function RewardCalculator() {
   const [ayahs, setAyahs] = useState([10]);
-  const REWARD_PER_AYAH = 5; // 5 units per ayah
+  const REWARD_PER_AYAH = 1; // 5 units per ayah
 
   return (
-    <section id="rewards" className="py-24 bg-primary text-white overflow-hidden relative">
+    <section
+      id="rewards"
+      className="py-24 bg-primary text-white overflow-hidden relative"
+    >
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <motion.span
@@ -47,18 +49,20 @@ export function RewardCalculator() {
                 step={1}
                 className="py-4"
               />
-              <p className="text-white/60 text-sm">حرك المؤشر لتحديد عدد الآيات التي تخطط لحفظها هذا الأسبوع.</p>
+              <p className="text-white/60 text-sm">
+                حرك المؤشر لتحديد عدد الآيات التي تخطط لحفظها هذا الأسبوع.
+              </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                 <p className="text-xs text-white/50 mb-1">المكافأة لكل آية</p>
-                <p className="text-lg font-bold">{REWARD_PER_AYAH} ريال</p>
+                <p className="text-lg font-bold">{REWARD_PER_AYAH} جنيه</p>
               </div>
               <div className="bg-white/5 p-4 rounded-xl border border-white/10">
                 <p className="text-xs text-white/50 mb-1">الرتبة المتوقعة</p>
                 <p className="text-lg font-bold text-secondary">
-                  {ayahs[0] > 50 ? "حافظ متميز" : "طالب مجتهد"}
+                  {ayahs[0] > 50 ? 'حافظ متميز' : 'طالب مجتهد'}
                 </p>
               </div>
             </div>
@@ -68,7 +72,7 @@ export function RewardCalculator() {
             <div className="absolute -top-4 -right-4 bg-secondary text-primary p-2 rounded-full shadow-lg">
               <Sparkles size={24} />
             </div>
-            
+
             <motion.div
               key={ayahs[0]}
               initial={{ scale: 0.8, opacity: 0 }}
@@ -83,21 +87,21 @@ export function RewardCalculator() {
                 <span className="text-5xl md:text-7xl font-headline font-bold text-secondary">
                   {ayahs[0] * REWARD_PER_AYAH}
                 </span>
-                <span className="text-2xl font-bold">ريال</span>
+                <span className="text-2xl font-bold">جنيه</span>
               </div>
-              
+
               <div className="mt-8 flex gap-1 justify-center">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <motion.div
                     key={i}
-                    animate={{ 
+                    animate={{
                       y: [0, -10, 0],
-                      opacity: [0.5, 1, 0.5]
+                      opacity: [0.5, 1, 0.5],
                     }}
-                    transition={{ 
-                      duration: 2, 
-                      delay: i * 0.2, 
-                      repeat: Infinity 
+                    transition={{
+                      duration: 2,
+                      delay: i * 0.2,
+                      repeat: Infinity,
                     }}
                   >
                     <Coins className="text-secondary/40" size={20} />

@@ -1,13 +1,12 @@
+'use client';
 
-"use client";
-
-import { MessageCircle } from "lucide-react";
-import { motion } from "framer-motion";
+import { MessageCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export function WhatsAppButton() {
   return (
     <motion.a
-      href="https://wa.me/yournumber"
+      href="https://wa.me/01050173227"
       target="_blank"
       rel="noopener noreferrer"
       initial={{ scale: 0, opacity: 0 }}
