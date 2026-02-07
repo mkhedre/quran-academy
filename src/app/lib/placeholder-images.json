@@ -1,0 +1,29 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-quran",
+      "description": "Elegant Quran with soft glow",
+      "imageUrl": "https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=600&h=400&auto=format&fit=crop",
+      "imageHint": "Quran glow"
+    },
+    {
+      "id": "avatar-1",
+      "description": "Student avatar",
+      "imageUrl": "https://picsum.photos/seed/12/100/100",
+      "imageHint": "face"
+    },
+    {
+      "id": "avatar-2",
+      "description": "Student avatar",
+      "imageUrl": "https://picsum.photos/seed/24/100/100",
+      "imageHint": "face"
+    },
+    {
+      "id": "avatar-3",
+      "description": "Student avatar",
+      "imageUrl": "https://picsum.photos/seed/36/100/100",
+      "imageHint": "face"
+    }
+  ]
+}
